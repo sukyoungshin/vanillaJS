@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>CALCULATOR</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <style>
+    form{
+      margin: 0 auto;
+      width: 260px;
+      height: fit-content;
+      background: rgb(97, 98, 104);
+      border-radius: 16px;
+      padding: 16px;
+      box-sizing: border-box;
+    }
+    form input[type="text"] {
+      padding-right: 16px;
+      margin: 0 auto;
+      width: 100%;
+      height: 48px;
+
+      text-align: right;
+      font-size: 32px;
+
+      outline: none;
+      background: rgba(208, 214, 225);
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+    form table {
+      width: 100%;
+      text-align: center;
+    }
+    form table td:not(.result) {
+      margin-right: 10px;
+      width: calc(100% / 4);  
+      height: 40px;
+      
+      background: rgb(255, 255, 255);
+      border: 3px solid rgb(97, 98, 104);
+      border-radius: 8px;
+      box-sizing: content-box;
+      vertical-align: middle;
+    }
+    form table td.empty {
+      height: 32px;
+      background: rgb(97, 98, 104);
+      box-sizing: border-box;
+    }
+
+    .reset,
+    .clear {
+      font-size: 16px;
+      font-weight: bold;
+    }
+    span:not(.reset, .clear){
+      font-size: 24px;
+      font-weight: normal;
+    }
+    
+    .number,
+    .reset,
+    .operator,
+    .period,
+    .equal {
+      display: block;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <form action="">
+    <table>
+      <thead>
+        <tr>
+          <td colspan="4" class="result">
+            <input id="result" type="text" placeholder="0" disabled>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span class="reset">DEL</span>
+          </td>
+          <td>
+            <span class="clear">C</span>
+          </td>
+          <td class="empty"></td>
+          <td class="empty"></td>
+        </tr>
+        <tr>
+          <td colspan="4" class="empty"></td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="number">7</span></td>
+          <td><span class="number">8</span></td>
+          <td><span class="number">9</span></td>
+          <td><span class="operator">&divide;</span></td>
+        </tr>
+        <tr>
+          <td><span class="number">4</span></td>
+          <td><span class="number">5</span></td>
+          <td><span class="number">6</span></td>
+          <td><span class="operator">&times;</span></td>
+        </tr>
+        <tr>
+          <td><span class="number">1</span></td>
+          <td><span class="number">2</span></td>
+          <td><span class="number">3</span></td>
+          <td><span class="operator">&minus;</span></td>
+        </tr>
+        <tr>
+          <td><span class="number">0</span></td>
+          <td><span class="period">.</span></td>
+          <td><span class="equal">&equals;</span></td>
+          <td><span class="operator">&plus;</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+
+<script>
+
+'use strict';
+
+// 변수지정
+let operator = document.getElementsByClassName('operator'); // 연산자 ( +, -, *, / )  --> passNum()에서 연산자 변경해야하므로 let으로 선언
+const NUMBER = document.getElementsByClassName('number'); // 숫자 (0 ~ 9)
+const RESULT = document.getElementById('result'); // 결과값 출력하는 공간 display viewer
+const EQUAL = document.getElementsByClassName('equal')[0]; // 이퀄 =
+const PERIOD = document.getElementsByClassName('period')[0]; // 소숫점 .
+
+let resultNum; // 연산이 완료된 결과값
+let currentNum = ''; // 현재 클릭된 숫자
+let oldNum = ''; // 이전에 담았던 숫자
+
+/* ======== 사칙연산 관련 함수 ======== */
+// 함수 setNum()  --> ❌ 변수명 변경필요
+// 1. 기존 결과값이 있으면, 현재받아온 값을 currentNum에 저장하고 결과값을 비운다.
+// 2. 기존 결과값이 없으면 현재받아온 값을 currentNum에 저장한다.
+// 위 조건을 통과한 결과값을, RESULT.value (결과값 나타내는 공간)에 전달해주는 함수
+function setNum() {
+  if (resultNum) {
+    currentNum = this.innerText; 
+    resultNum = ''; 
+  } else {
+    currentNum += this.innerText;
+  }
+  RESULT.value = currentNum; 
+};
+
+// 함수 passNum() --> ❌ 변수명 변경필요
+// 연산자 ( +, -, *, / )를 클릭하면, 
+// currentNum에 저장했던 숫자를 oldNum으로 옮기고, 현재 클릭한 연산자를 저장하는 함수
+function passNum() {
+  oldNum = currentNum;
+  currentNum = '';
+  operator = this.innerText; 
+};
+
+/* ======== 소숫점자리 관련 함수 ======== */
+// 함수 searchDecimalPoint()
+// 입력받은 숫자에 소숫점(PERIOD)이 있는지 확인하는 함수
+function searchDecimalPoint() {
+  // 조건 : RESULT.value에 콤마(string)가 없으면 넣고, 있으면 return   ---> ❌ tenary operator로 코드길이 개선을...
+  if (RESULT.value.indexOf('.') > -1 ) {
+    return;
+  } else {
+    currentNum += this.innerText;
+  }
+};
+
+// 함수 isNumberHasDecimalPoint()
+// 입력받은 숫자값에 소숫점이 있는지 체크하여 true/false 반환하는 함수
+function isNumberHasDecimalPoint(num){
+  num = String(num);
+  return num.includes(".");
+};
+
+function getPointLength(num) {
+  const DIGIT = `${num}`.length - (`${num}`.indexOf('.') > -1 ? `${num}`.indexOf('.') : 0) - 1;
+
+  console.log('@@getPointLength', DIGIT); // 1.1 * 3 하면 콘솔에 100..?
+  return DIGIT;
+}
+
+// 함수 isDecimalPointHasLength() 
+// 소숫점자릿수만큼 10을 곱해서 정수로 바꿔주는 함수 (ex.  n = 0.0003 * 10000  -->  n = 3 )   
+function isDecimalPointHasLength(num) {
+
+  getPointLength(num);
+
+  let multiplyNum = 1; // 소숫점 아래 자릿수는 최소 1개이므로. (ex.   0.1 )
+
+  for (let i = num; i > 0 ; i--) {
+    multiplyNum = multiplyNum * 10;
+  }
+  return multiplyNum;
+};
+
+/* ======== 계산한 결과값 받아오는 함수 ======== */
+// 함수 calculate()
+// 선택된 숫자와 연산자를 이용하여 연산을 하고, 결과물을 얻어내는 함수
+function calculate() {
+
+  // 조건
+  // 1. 두 숫자에 PERIOD가 있는지 확인해보고, PERIOD가 있다면 소숫점자리수가 가장 긴 숫자를 골라낸다. (소숫점자리숫자가 없을 시 pass)
+  // 2. 긴 숫자의 소숫점자리수만큼 10을 곱해서 '정수'로 만들어준다. (ex. 0.0003 x 10000 = 30000 )
+  // 3. switch문이 끝나면, 계산한 결과값에 (소숫점자리수만큼 10을 곱한) 숫자로 나누어 다시 소
+  // 5. 결과를 계산기 화면에 보여준다.
+  
+  let standard = 1; // 소숫점자리수 기본값 1로 지정 (소숫점 자리수는 최소 1개이므로.  ex.    0.1  )
+  const isOldNumHasDecimalPoint = isNumberHasDecimalPoint(oldNum); // 콤마 존재여부 체크 (true or false)
+  const isCurrentNumHasDecimalPoint = isNumberHasDecimalPoint(currentNum); // 콤마 존재여부 체크 (true or false)
+  
+  //조건 : 소수점자리수가 가장 큰 수를 구해서, 각각의 소수점자리수를 구한 후에 비교
+  if (isOldNumHasDecimalPoint || isCurrentNumHasDecimalPoint) {
+    const isOldNumHasDecimalPoint = getPointLength(oldNum);
+    const isCurrentNumHasDecimalPoint = getPointLength(currentNum);
+    const biggerNumConfirm = isOldNumHasDecimalPoint > isCurrentNumHasDecimalPoint ? isOldNumHasDecimalPoint : isCurrentNumHasDecimalPoint;
+    // const biggerNumConfirm = Math.max(num1, num2);
+
+    standard = isDecimalPointHasLength(biggerNumConfirm); // 소숫점자리수 <--그수를 넣는다
+  };
+
+  // 입력받은 숫자들(oldNum, currentNum)을 switch문에 넣고 연산을 돌린다.
+  oldNum = Number(oldNum);
+  currentNum = Number(currentNum);
+
+  switch (operator) {
+    case '÷':
+      resultNum = ( oldNum * standard )  / ( currentNum * standard );
+      resultNum = resultNum / Math.pow(standard, 2); // 연산이 완료된 결과괎(정수)을 소숫점이 있는 숫자(실수)로 변환 후, resultNum에 저장
+      break;
+    case '×':
+      resultNum = ( oldNum * standard ) * ( currentNum * standard ); // 1.1*3 (standard: 10) => 11 * 30 = 33 
+      resultNum = resultNum / Math.pow(standard, 2); // 연산이 완료된 결과괎(정수)을 소숫점이 있는 숫자(실수)로 변환 후, resultNum에 저장
+      break;
+    case '−':
+      resultNum = ( oldNum * standard ) - ( currentNum * standard );
+      resultNum = resultNum / standard; // 연산이 완료된 결과괎(정수)을 소숫점이 있는 숫자(실수)로 변환 후, resultNum에 저장
+      break;
+    case '+':
+      resultNum = ( oldNum * standard ) + ( currentNum * standard );
+      resultNum = resultNum / standard; // 연산이 완료된 결과괎(정수)을 소숫점이 있는 숫자(실수)로 변환 후, resultNum에 저장
+      break;
+
+    // 두번째로 선택된 숫자가 없으면, 현재 선택된 숫자를 화면에 나타냄
+    default:
+      resultNum = currentNum;
+      break;
+  };
+
+  // 위 switch문에서 최종 연산이 끝나면, 아래 구문을 실행한다.
+  RESULT.value = resultNum; // 연산이 완료된 결과값을 RESULT.value에 전달
+  oldNum = 0; // 기존에 저장했던 숫자는 0으로 리셋
+  currentNum = resultNum; // 연산 완료 후, 얻은 결과값을 currentNum으로 전달
+};
+
+/* ======== 이벤트 함수 ======== */
+// 숫자 버튼을 클릭하면, 함수 setNum을 실행한다.
+for(let i = 0; i < NUMBER.length; i++) {
+  NUMBER[i].onclick = setNum;
+};
+
+// 연산자 버튼을 클릭하면, 함수 passNum을 실행한다.
+for(let i = 0; i < operator.length; i++) {
+  operator[i].onclick = passNum;
+};
+
+// EQUAL 버튼을 클릭하면, 함수 calculate을 실행한다.
+EQUAL.onclick = calculate;
+
+// 소숫점 버튼을 클릭하면, 함수 searchDecimalPoint을 실행한다.
+PERIOD.onclick = searchDecimalPoint;
+
+/* ======== 로직짜면서 배운 내용 ======== */
+// ✅ 좋은 변수명에 대한 고민 : 변수명은 길어도 괜찮으니 '직관적'으로 짜야한다. 어짜피 컴퓨터가 자동완성으로 찾아주니까 변수명 긴건 okay... 단, 의미전달이 분명해야함
+// --> https://remotty.github.io/blog/2014/03/01/hyogwajeogin-ireumjisgi/
+
+// ✅ 캡슐화 : 함수의 외부환경에있는 변수를 쓰는 거  --> 함수 calculate() 참고
+
+// ✅ includes & indexOf : 배열에서 필요한 값을 찾아내는 메서드
+// console.log("123.3".includes(".")); // true
+// console.log("123.3".indexOf(".")); // 3
+// console.log("123.3".indexOf(".") > -1 ); // true  (-1은 값 없을때) 
+// console.log("1.234".length - "1.234".indexOf('.') - 1);// 2면 100, 3 = 10*3, 4 = 10*4
+
+// ✅ 이슈 & 해결방법
+// X : 0.1 + 0.2 = 0.30000000000000004 ..? --> https://velog.io/@sgyoon/2019-09-15-01
+// O : 0.1 + 0.003 ---> 각 1000곱해서 정수로 만들어서 계산하고 다시 1000으로 나눔..
+
+/* ======== 추가구현사항 ========*/
+// 1. 소숫점 . 을 클릭했을때의 연산
+// 2. DEL버튼을 클릭했을 때 화면reset
+// 3. NaN과 Infinity 처리 (ex. 1 / 0 -> Infinity, 0 / 0 -> NaN ) --> https://ichi.pro/ko/javascriptui-infinityneun-mueos-ibnikka-34838676570300
+// 4. 1 + 1 + 1 + 1 + 1... 연속으로 계산 가능하도록 바꿔보기
+// 5. () 계산가능하게 바꿔보기   (ex. 2 + (5 + 2 ) * 1)
+
+
+
+
+</script>
+</body>
+</html>
