@@ -1,7 +1,0 @@
-
-/* ======== 추가구현사항 ========*/
-// 1. 소숫점 . 을 클릭했을때의 연산  ==> 진행중
-// 2. C버튼을 클릭했을 때 화면reset
-// 3. NaN과 Infinity 처리 (ex. 1 / 0 -> Infinity, 0 / 0 -> NaN ) --> https://ichi.pro/ko/javascriptui-infinityneun-mueos-ibnikka-34838676570300
-// 4. 1 + 1 + 1 + 1 + 1... 연속으로 계산 가능하도록 바꿔보기
-// 5. () 계산가능하게 바꿔보기   (ex. 2 + (5 + 2 ) * 1)
