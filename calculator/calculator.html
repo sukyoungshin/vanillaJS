@@ -172,10 +172,13 @@ function setNum() {
 // 연산자 ( +, -, *, / )를 클릭하면, 
 // currentNum에 저장했던 숫자를 oldNum으로 옮기고, 현재 클릭한 연산자를 저장하는 함수
 function passNum() {
+  if (currentNum === 0) {
+    RESULT.value = 0;
+  }
+
   oldNum = currentNum;
   currentNum = '';
   operator = this.innerText; 
-  RESULT.value = 0;
 };
 
 /* ======== 소숫점자리 관련 함수 ======== */
