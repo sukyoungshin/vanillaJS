@@ -130,11 +130,12 @@
 'use strict';
 
 // 변수지정
-let operator = document.getElementsByClassName('operator'); // 연산자 ( +, -, *, / )  --> passNum()에서 연산자 변경해야하므로 let으로 선언
+let operator = document.getElementsByClassName('operator'); // 연산자 ( +, -, *, / ) 
 const NUMBER = document.getElementsByClassName('number'); // 숫자 (0 ~ 9)
 const RESULT = document.getElementById('result'); // 결과값 출력하는 공간 display viewer
 const EQUAL = document.getElementsByClassName('equal')[0]; // 이퀄 =
 const PERIOD = document.getElementsByClassName('period')[0]; // 소숫점 .
+const CLEAR = document.getElementsByClassName('clear')[0]; // C 버튼 (clear)
 
 let resultNum; // 연산이 완료된 결과값
 let currentNum = ''; // 현재 클릭된 숫자
@@ -185,6 +186,11 @@ function searchDecimalPoint() {
   if (RESULT.value.indexOf('.') > -1 ) {
     return;
   } else {
+
+    // 조건 : 소숫점만 클릭하면 0.이 붙도록 설정
+    if (currentNum.length > -1) {
+      currentNum = 0;
+    }
     currentNum += this.innerText;
   }
 };
@@ -218,6 +224,15 @@ function isDecimalPointHasLength(num) {
   }
   return multiplyNum;
 };
+
+// 함수 clearAll ()
+function clearAll() {
+  oldNum = '';
+  currentNum = '';
+  resultNum = '';
+  operator = '';
+  RESULT.value = '';
+}
 
 /* ======== 계산한 결과값 받아오는 함수 ======== */
 // 함수 calculate()
@@ -279,7 +294,6 @@ function calculate() {
 };
 
 /* ======== 이벤트 함수 ======== */
-
 for(let i = 0; i < NUMBER.length; i++) {
   NUMBER[i].onclick = setNum;
 };
@@ -290,8 +304,7 @@ for(let i = 0; i < operator.length; i++) {
 
 EQUAL.onclick = calculate;
 PERIOD.onclick = searchDecimalPoint;
-
-
+CLEAR.onclick = clearAll;
 
 </script>
 </body>
