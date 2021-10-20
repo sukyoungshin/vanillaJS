@@ -151,10 +151,9 @@ function setNum() {
   // 2. 입력받은 값이 0이 아니면, pass
   // 숫자입력없이 콤마를 누르면 currentNum값 0으로 셋팅
   // 입력받은 값이 있으면 (빈문자열이어도 true 나옴), currentNum을 0으로 셋팅
-  // if (RESULT.value.length > -1) {
-  //   currentNum = '0';
-  //   // RESULT.value = currentNum; // 화면엔 0.0 ??
-  // }
+  if (currentNum.includes('.')) {
+    currentNum = '0.'; // 0.1 + 3....
+  }
 
   // 1. 기존 결과값이 있으면, 현재받아온 값을 currentNum에 저장하고 결과값을 비운다.
   // 2. 기존 결과값이 없으면 현재받아온 값을 currentNum에 저장한다.
