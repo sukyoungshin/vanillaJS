@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Hello!</h2>
+
+  <script>
+    const colors = ["#1abc9c", "#3498db", "#9b59b6", "#f39c12", "#e74c3c"];
+    /*
+    ✅ On right click the title should also change.
+    */
+
+    const superEventHandler = {
+      
+      // font-color change event : (created for resuable purpose)
+      colorchange : function textColorChange() {
+        title.style.color = colors[Math.floor(Math.random()*5)]; // extract random color from colors array
+      },
+      // mouse & window event :
+      mouseenter : function handleMouseEnter() {
+        title.innerText = "The mouse is here!";
+        superEventHandler.colorchange();
+      },
+      mouseleave : function handleMouseLeave() {
+        title.innerText = "The mouse is gone!";
+        superEventHandler.colorchange();
+      },
+      contextmenu : function handleMouseRightClick() {
+        title.innerText = "That was a right click!";
+      },
+      windowsize : function windowSizeHandler() {
+        title.innerText = "You just resize!";
+        superEventHandler.colorchange(); 
+      }
+    };
+
+    const title = document.querySelector("body h2"); 
+
+    title.addEventListener("mouseenter", superEventHandler.mouseenter);
+    title.addEventListener("mouseleave", superEventHandler.mouseleave);
+    window.addEventListener("resize", superEventHandler.windowsize);
+    window.addEventListener("contextmenu", superEventHandler.contextmenu);
+  </script>
+</body>
+</html>

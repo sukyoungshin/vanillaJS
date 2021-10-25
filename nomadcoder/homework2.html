@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>Page Title</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <style>
+    /* CSS Reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    h1 {
+      margin: 0;
+    }
+    /* Color setting */
+    .white {
+      color: white;
+    }
+    .orange {
+      background: orange;
+    }
+    .purple {
+      background: slateblue;
+    }
+    .blue {
+      background: steelblue;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 class="white">Hello!</h1> 
+
+<script>
+  'use strict';
+
+  let intViewportWidth = window.innerWidth;
+  
+  // 1. whenever resize event happens, detect screen width
+  function detectViewportWidth() {
+    intViewportWidth = window.innerWidth; // get currentWidth
+    changeBgColor(); // according to the currentWidth, change bgColor
+  };
+
+// Change document's BgColor
+  function changeBgColor() {
+
+    if (intViewportWidth > 961) {
+      document.body.classList.remove('orange', 'purple', 'blue');
+      document.body.classList.add('orange');
+      // or another way👇
+      // document.body.classList = 'orange';
+    } else if (360 < intViewportWidth && intViewportWidth < 960) {
+      document.body.classList.remove('orange', 'purple', 'blue');
+      document.body.classList.add('purple');
+      // or another way👇
+      // document.body.classList = 'purple';
+    } else {
+      document.body.classList.remove('orange', 'purple', 'blue');
+      document.body.classList.add('blue');
+      // or another way👇
+      // document.body.classList = 'blue';
+    }
+
+  };
+
+  window.addEventListener('load', changeBgColor); // initial bgColor setting
+  window.addEventListener('resize', detectViewportWidth); // resize event happens, document's bg color changes
+
+</script>
+</body>
+</html>
