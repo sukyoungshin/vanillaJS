@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>Christmas D-day Counter</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <style>
+    main{
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>🎄 Time Until Christmas Eve 🎄</h1>
+    <h2>000d 00h 00m 00s</h2>
+  </main>
+
+  <script>
+  const dDayLeft = document.querySelector('h2');
+  function xMasCounter() {
+    const today = new Date();
+    const theDay = new Date(today.getFullYear(), 11, 25);
+    const milliSecondsGap = theDay.getTime() - today.getTime();
+
+    const days = Math.floor(milliSecondsGap / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((milliSecondsGap / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((milliSecondsGap / (1000 * 60)) % 60);
+    const seconds = Math.floor((milliSecondsGap / 1000) % 60);
+
+    const hoursConvert = String(hours).padStart(2, "0");
+    const minutesConvert = String(minutes).padStart(2, "0");
+    const secondsConvert = String(seconds).padStart(2, "0");
+
+    if (today.getMonth() === 11 && today.getDate >= 25) {
+      theDay.setFullYear(theDay.getFullYear() + 1);
+    }
+    dDayLeft.innerText = `${days}d ${hoursConvert}h ${minutesConvert}m ${secondsConvert}s`;
+  };
+
+  window.addEventListener("load", xMasCounter());
+  setInterval(xMasCounter, 1000);
+
+    // getFullYear() : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getFullYear
+    // getTime() : date -> milliSecondsGap
+    // getTime() : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime
+    // getTime() always uses UTC for time representation. For example, a client browser in one timezone, getTime() will be the same as a client browser in any other timezone.
+
+    // - getFullYear 사용한 예제 : https://www.w3resource.com/javascript-exercises/javascript-basic-exercise-9.php
+
+  </script>
+</body>
+</html>
