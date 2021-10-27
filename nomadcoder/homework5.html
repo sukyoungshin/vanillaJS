@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>random background linear-gradient </title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <style>
+    *, 
+    *::before, 
+    *::after {
+      box-sizing: border-box;
+    }
+    html, 
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .button-wrapper {
+      margin: 0 auto;
+      width: fit-content;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="button-wrapper">
+    <button>Give me color</button>
+  </div>
+
+  <script>
+    const colors = ["#ef5777","#575fcf","#4bcffa","#34e7e4","#0be881","#f53b57","#3c40c6","#0fbcf9","#00d8d6","#05c46b","#ffc048","#ffdd59","#ff5e57","#d2dae2","#485460","#ffa801","#ffd32a","#ff3f34"];
+    const bgButton = document.querySelector('.button-wrapper button');
+
+    function bgColorChangeHandler() {
+      const randomColor1 = colors[Math.floor(Math.random() * colors.length)];
+      const randomColor2 = colors[Math.floor(Math.random() * colors.length)];
+      const bggradient = `background: linear-gradient(90deg, ${randomColor1}, ${randomColor2})`;
+      document.body.style = bggradient;
+    }
+    bgButton.addEventListener('click', bgColorChangeHandler);
+  </script>  
+</body>
+</html>

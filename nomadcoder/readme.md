@@ -10,3 +10,4 @@
 - homework2 : window이벤트에 따라 background color변경
 - homework3 : random number game
 - homework4 : 크리스마스 d day 카운팅
+- homework5 : background linear-gradient
