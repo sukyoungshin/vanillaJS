@@ -11,25 +11,23 @@ function createNewBoard(e) {
   e.preventDefault();
   const toDoLists = document.querySelector('input');
   const board = document.createElement('div');
+  board.setAttribute('draggable', 'true');
+  board.addEventListener('dragstart', dragBoard);
+  board.style.backgroundColor = paintBackgroundColor();
+
+  const span = document.createElement('span');
+  span.innerText = toDoLists.value;
+  toDoLists.value = '';
+
   const closeButton = document.createElement('button');
   closeButton.innerText ='X';
   closeButton.setAttribute('type', 'button');
   closeButton.setAttribute('class', 'close');
   closeButton.addEventListener('click', deleteBoard);
 
-  const paragraph = document.createElement('p');
-  paragraph.innerText = toDoLists.value;
-  toDoLists.value = '';
-  
+  board.appendChild(span);
   board.appendChild(closeButton);
-  board.appendChild(paragraph);
   
-  const randomNum = new Date().getMilliseconds();
-  board.setAttribute('id', randomNum);
-  board.setAttribute('draggable', 'true');
-  board.addEventListener('dragstart', dragBoard);
-  board.style.backgroundColor = paintBackgroundColor();
-
   return document.body.appendChild(board);
 };
 
@@ -40,11 +38,14 @@ function deleteBoard() {
 
 function paintBackgroundColor() {
   const backgroundColorsArray = [
-    'tomato', 
-    'bluelight', 
-    'pink', 
-    'skyblue', 
-    'lightgrey'
+    'lightcoral', 
+    'lightpink', 
+    'lightblue', 
+    'lightgrey',
+    'lightsalmon',
+    'lightseagreen',
+    'lightsteelblue',
+    'lightslategrey',
   ];
   const backgroundColorIndex = backgroundColorsArray.length;
   const randomNum = Math.floor(Math.random()*backgroundColorIndex);
@@ -60,7 +61,6 @@ function dragBoard(e) {
 
 function dropBoard(e) {
   e.preventDefault();
-
 };
 
 function allowDrop(e) {
