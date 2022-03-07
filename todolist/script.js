@@ -45,14 +45,3 @@ function deleteToDo() {
 function checkToDo() {
   this.classList.toggle('checked');
 };
-
-
-/*
-REFERENCE : https://www.w3schools.com/howto/howto_js_todolist.asp
-
-- querySelector로 선택하면 첫번째 요소만 선택되므로, getElementBy...를 사용했음.
-- li를 선택하기 위해선, ul을 선택자로 잡는다.
-- classList : 요소의 class명을 반환해주는 속성이다. (읽기전용)  
-https://www.w3schools.com/jsref/prop_element_classlist.asp
-https://developer.mozilla.org/ko/docs/Web/API/Element/classList
-*/
