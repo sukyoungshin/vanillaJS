@@ -9,20 +9,24 @@ function init() {
 
 function createNewBoard(e) {
   e.preventDefault();
-  const toDoLists = document.querySelector('input');
+  const ramdomData = new Date().getMilliseconds();
   const board = document.createElement('div');
   board.setAttribute('draggable', 'true');
+  board.setAttribute('data-id', ramdomData);
   board.addEventListener('dragstart', dragBoard);
   board.style.backgroundColor = paintBackgroundColor();
-
+  
+  const toDoLists = document.querySelector('input');
   const span = document.createElement('span');
-  span.innerText = toDoLists.value;
+  span.setAttribute('draggable', 'false');
+  span.innerText = toDoLists.value || '메모없음';
   toDoLists.value = '';
 
   const closeButton = document.createElement('button');
   closeButton.innerText ='X';
   closeButton.setAttribute('type', 'button');
   closeButton.setAttribute('class', 'close');
+  closeButton.setAttribute('draggable', 'false');
   closeButton.addEventListener('click', deleteBoard);
 
   board.appendChild(span);
@@ -37,7 +41,7 @@ function deleteBoard() {
 };
 
 function paintBackgroundColor() {
-  const backgroundColorsArray = [
+  const backgroundColors = [
     'lightcoral', 
     'lightpink', 
     'lightblue', 
@@ -47,16 +51,23 @@ function paintBackgroundColor() {
     'lightsteelblue',
     'lightslategrey',
   ];
-  const backgroundColorIndex = backgroundColorsArray.length;
+  const backgroundColorIndex = backgroundColors.length;
   const randomNum = Math.floor(Math.random()*backgroundColorIndex);
-  return backgroundColorsArray[randomNum];
+  return backgroundColors[randomNum];
 };
 
 function dragBoard(e) {
+  let currTarget = e.target;
+  const targetParent = currTarget.parentElement;
+  const isChildOfBoardElement = currTarget.dataset.id === '' && targetParent.tagName === 'DIV';
+  if (isChildOfBoardElement) {
+    e.stopPropagation();
+    currTarget = targetParent;
+  }
   const posX = e.clientX;
   const posY = e.clientY;
-  e.target.style.left = posX + 'px';
-  e.target.style.top = posY + 'px';
+  currTarget.style.left = posX + 'px';
+  currTarget.style.top = posY + 'px';
 };
 
 function dropBoard(e) {
@@ -67,5 +78,4 @@ function allowDrop(e) {
   e.preventDefault();
   e.dataTransfer.effectAllowed = "move";
   dragBoard(e);
-  console.log(e);
 };

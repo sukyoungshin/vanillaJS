@@ -12,18 +12,38 @@ p, h1, h2, h3, h4, h5, h6 {
   margin: 0;
   padding: 0;
 }
-
+input, button {
+  padding: 0;
+  outline: 0;
+  border: 0;
+}
+/* STYLE */
+body {
+  background-color: rgba(0,0,0,0.1);
+}
 form {
   margin: auto;
   width: 100%;
-  height: auto;
-  position: relative;
+  height: 42px;
+  font-size: 0;
+  text-align: center;
+}
+input {
+  padding: 0 0 0 16px;
+  width: 80%;
+  height: 100%;
+}
+button:not(.close) {
+  padding: 0 16px;
+  width: 20%;
+  height: 100%;
 }
 div {
   padding: 8px;
   min-width: 200px;
   max-width: 200px;
   min-height: 180px;
+  max-height: 200px;
   height: fit-content;
   overflow: auto;
 
@@ -34,13 +54,16 @@ div {
 
   border-radius: 8px;
 }
-
 span {
   width: 100%;
   color: snow;
+  font-size: 14px;
+  user-select: none;
 }
-
 .close {
+  width: 24px;
+  height: 24px;
+
   position: absolute;
   top: 8px;
   right: 8px;
